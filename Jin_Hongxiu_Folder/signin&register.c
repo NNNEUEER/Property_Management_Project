@@ -1,60 +1,62 @@
-#include "tou.h"
-/// å¯åŠ¨ç™»å½•å’Œæ³¨å†Œ
+
+#include "head.h"
+/// Æô¶¯µÇÂ¼ºÍ×¢²á
 /// ////////////////////////////////////////////////////////////////
-void removen(char* str)//å»æ¢è¡Œç¬¦
+void removen(char* str)//È¥»»ĞĞ·û
 {
-	char* pos = strchr(str, '\n');
+	char* pos = strchr(str, '\n'); //strchrÔÚ×Ö·û´®ÖĞ²éÕÒµÚÒ»´Î³öÏÖÄ³¸ö×Ö·ûµÄÎ»ÖÃ²¢·µ»ØÖ¸Õë¡£
 	if (pos != NULL)
 	{
 		*pos = '\0';
 	}
 }
-void freeList() {
-	yezhu* current = head;
-	yezhu* nextnode = NULL;
+void freeList()//ÊÍ·ÅÄÚ´æ
+{
+	current = head;
+	yezhu* nextnode = NULL;//´´½¨nextnode
 	while (current != NULL) {
 		nextnode = current->next;
 		free(current);
 		current = nextnode;
 	}
-	head = NULL;
+	head = NULL;//ÖØĞÂÖ¸Ïò¿Õ
 	prear = NULL;
 }
-int loadfee()//åŠ è½½ç¼´è´¹åˆ°é“¾è¡¨
+int loadfee()//¼ÓÔØ½É·Ñµ½Á´±í
 {
-	FILE* fp = fopen("fee.txt", "r");
+	FILE* fp = fopen("fee.txt", "r");//Ö»¶ÁÄ£Ê½´ò¿ª
 	if (fp == NULL)
 	{
-		printf("é”™è¯¯ï¼Œæ— æ³•æ‰“å¼€æ–‡ä»¶");
+		printf("´íÎó£¬ÎŞ·¨´ò¿ªÎÄ¼ş");
 		return 1;
 	}
-	char line[200]; // å­˜æ•´è¡Œæ•°æ®
-	while (fgets(line, 200, fp) != NULL)
+	char line[200]; // ´æÕûĞĞÊı¾İ
+	while (fgets(line, 200, fp) != NULL)//°´ĞĞ¶ÁÈ¡
 	{
-		removen(line);
-		if (strlen(line) == 0) continue;
-		fee* newnode = (fee*)malloc(sizeof(fee));
+		removen(line);//È¥»»ĞĞ·û
+		if (strlen(line) == 0) continue;//Ìø¹ı¿ÕĞĞ
+		fee* newnode = (fee*)malloc(sizeof(fee));//´´½¨newnode
 		if (newnode == NULL)
 		{
-			printf("å†…å­˜åˆ†é…å¤±è´¥ï¼\a\n");
+			printf("ÄÚ´æ·ÖÅäÊ§°Ü£¡\a\n");
 			fclose(fp);
 			return 1;
 		}
-		char linecopy[200];
+		char linecopy[200];//°´","·Ö¸î»á¸Ä±äÔ­ÓĞ×Ö·û´®£¬ËùÒÔÒªÓÃ¿½±´µÄ
 		strcpy(linecopy, line);
-		char* add1 = strtok(linecopy, ",");
+		char* add1 = strtok(linecopy, ",");//°´¶ººÅ·Ö¸î²¢´æ´¢£¬strtok·µ»Ø¶ººÅÖ®Ç°µÄ×Ö·û´®µÄÖ¸Õë
 		char* add2 = strtok(NULL, ",");
 		char* add3 = strtok(NULL, ",");
 		char* year = strtok(NULL, ",");
 		char* month = strtok(NULL, ",");
 		char* day = strtok(NULL, ",");
-		char* sum= strtok(NULL, ",");
+		char* sum = strtok(NULL, ",");
 		char* yn = strtok(NULL, ",");
 		char* year2 = strtok(NULL, ",");
 		char* month2 = strtok(NULL, ",");
 		char* day2 = strtok(NULL, ",");
 		if (!add1 || !add2 || !add3 || !year || !month || !day || !sum || !yn || !year2 || !month2 || !day2) {
-			printf("è·³è¿‡é”™è¯¯è¡Œï¼š%sï¼ˆå­—æ®µç¼ºå¤±/æ ¼å¼é”™è¯¯ï¼‰\n", line);
+			printf("Ìø¹ı´íÎóĞĞ£º%s£¨×Ö¶ÎÈ±Ê§/¸ñÊ½´íÎó£©\n", line);
 			free(newnode);
 			continue;
 		}
@@ -62,8 +64,8 @@ int loadfee()//åŠ è½½ç¼´è´¹åˆ°é“¾è¡¨
 		strcpy(newnode->add2, add2);
 		strcpy(newnode->add3, add3);
 		strcpy(newnode->sum, sum);
-		strcpy(newnode->yn,yn);
-		sprintf(newnode->date, "%s,%s,%s", year, month, day);
+		strcpy(newnode->yn, yn);
+		sprintf(newnode->date, "%s,%s,%s", year, month, day);//½«¸ñÊ½»¯µÄÊı¾İĞ´Èë
 		sprintf(newnode->date2, "%s,%s,%s", year2, month2, day2);
 		prear1->next1 = newnode;
 		prear1 = newnode;
@@ -72,15 +74,15 @@ int loadfee()//åŠ è½½ç¼´è´¹åˆ°é“¾è¡¨
 	fclose(fp);
 	return 0;
 }
-int loadusers()//åŠ è½½ç”¨æˆ·åˆ°é“¾è¡¨
+int loadusers()//¼ÓÔØÓÃ»§µ½Á´±í£¨ºÍ¼ÓÔØ½É·ÑÒ»Ñù£©
 {
 	FILE* fp = fopen("user.txt", "r");
 	if (fp == NULL)
 	{
-		printf("é”™è¯¯ï¼Œæ— æ³•æ‰“å¼€æ–‡ä»¶");
+		printf("´íÎó£¬ÎŞ·¨´ò¿ªÎÄ¼ş");
 		return 1;
 	}
-	char line[100]; // å­˜æ•´è¡Œæ•°æ®
+	char line[100]; // ´æÕûĞĞÊı¾İ
 	while (fgets(line, 100, fp) != NULL)
 	{
 		removen(line);
@@ -88,7 +90,7 @@ int loadusers()//åŠ è½½ç”¨æˆ·åˆ°é“¾è¡¨
 		yezhu* newnode = (yezhu*)malloc(sizeof(yezhu));
 		if (newnode == NULL)
 		{
-			printf("å†…å­˜åˆ†é…å¤±è´¥ï¼\a\n");
+			printf("ÄÚ´æ·ÖÅäÊ§°Ü£¡\a\n");
 			fclose(fp);
 			return 1;
 		}
@@ -101,7 +103,7 @@ int loadusers()//åŠ è½½ç”¨æˆ·åˆ°é“¾è¡¨
 		char* pwd = strtok(NULL, ",");
 		char* tel = strtok(NULL, ",");
 		if (!add1 || !add2 || !add3 || !name || !pwd) {
-			printf("è·³è¿‡é”™è¯¯è¡Œï¼š%sï¼ˆå­—æ®µç¼ºå¤±/æ ¼å¼é”™è¯¯ï¼‰\n", line);
+			printf("Ìø¹ı´íÎóĞĞ£º%s£¨×Ö¶ÎÈ±Ê§/¸ñÊ½´íÎó£©\n", line);
 			free(newnode);
 			continue;
 		}
@@ -118,101 +120,104 @@ int loadusers()//åŠ è½½ç”¨æˆ·åˆ°é“¾è¡¨
 	fclose(fp);
 	return 0;
 }
-void qidong()
+void qidong()//Æô¶¯Ò³Ãæ
 {
 	printf("*************************\n");
-	printf("*********è¯·é€‰æ‹©**********\n");
-	printf("*********1__ç™»å½•*********\n");
-	printf("*********2__é€€å‡º*********\n");
-	printf("*********3__æ³¨å†Œ*********\n");
-	printf("***4__æ‰¾å›ç”¨æˆ·åå’Œå¯†ç ***\n");
+	printf("*********ÇëÑ¡Ôñ**********\n");
+	printf("*********1__µÇÂ¼*********\n");
+	printf("*********2__ÍË³ö*********\n");
+	printf("*********3__×¢²á*********\n");
+	printf("***4__ÕÒ»ØÓÃ»§ÃûºÍÃÜÂë***\n");
 }
-//æ“ä½œé¡µé¢
+//²Ù×÷Ò³Ãæ
 void caozuo()
 {
-	printf("\n==================== ä¸šä¸»åŠŸèƒ½èœå• ====================\n");
-	printf("1.ä¿®æ”¹ä¿¡æ¯");
-	printf("2.ç¼´è´¹æŸ¥è¯¢");
-	printf("3.ç¼´è´¹");
-	printf("4.æ˜¾ç¤ºæ‰€æœ‰ç¼´è´¹è®°å½•");
-	printf("5.æŸ¥è¯¢æœåŠ¡äººå‘˜");
-	printf("6.ä¿¡æ¯æ’åº");
-	printf("7.ç¼´è´¹ç»Ÿè®¡");
-	printf("0.é€€å‡ºç™»å½•");
+	printf("\n==================== ÒµÖ÷¹¦ÄÜ²Ëµ¥ ====================\n");
+	printf("1.ĞŞ¸ÄĞÅÏ¢");
+	printf("2.½É·Ñ²éÑ¯");
+	printf("3.½É·Ñ");
+	printf("4.ÏÔÊ¾ËùÓĞ½É·Ñ¼ÇÂ¼");
+	printf("5.²éÑ¯·şÎñÈËÔ±");
+	printf("6.ĞÅÏ¢ÅÅĞò");
+	printf("7.½É·ÑÍ³¼Æ");
+	printf("8.µçÆ÷ÏµÍ³");
+	printf("9.±¨ĞŞÏµÍ³");
+	printf("10.¸ø³öÒâ¼û");
+	printf("0.ÍË³öµÇÂ¼");
 	printf("======================================================\n");
-	printf("è¯·é€‰æ‹©\n");
+	printf("ÇëÑ¡Ôñ\n");
 }
-//æ³¨å†Œé¡µé¢
+//×¢²áÒ³Ãæ
 int zhuce()
 {
-	char add1[20];//æ¥¼å·
-	char add2[20];//æ¥¼å±‚
-	char add3[20];//æˆ·å·
-	char tel[30];//ç”µè¯
+	char add1[20];//Â¥ºÅ
+	char add2[20];//Â¥²ã
+	char add3[20];//»§ºÅ
+	char tel[30];//µç»°
 	char name[30];
 	char pwd[30];
 	int tmp = 0;
 start1:
-	printf("è¯·è¾“å…¥ç”¨æˆ·æ¥¼å·ï¼ˆå¦‚â€œ123â€ï¼Œ1-999å†…ï¼‰");
+	printf("ÇëÊäÈëÓÃ»§Â¥ºÅ£¨Èç¡°123¡±£¬1-999ÄÚ£©");
 	scanf("%10s", add1);
-	tmp = checkadd(add1, 4);
+	tmp = checkadd(add1, 4);//¼ì²éµØÖ·ÊÇ·ñ·ûºÏ³¤¶È
 	if (tmp == 1)
 	{
-		printf("æ ¼å¼é”™è¯¯\a\n");
+		printf("¸ñÊ½´íÎó\a\n");
 		goto start1;
 	}
 start2:
-	printf("è¯·è¾“å…¥ç”¨æˆ·æ¥¼å±‚ï¼ˆå¦‚â€œ10â€ï¼Œ1-99å†…ï¼‰");
+	printf("ÇëÊäÈëÓÃ»§Â¥²ã£¨Èç¡°10¡±£¬1-99ÄÚ£©");
 	scanf("%10s", add2);
-	tmp = checkadd(add2, 3);
+	tmp = checkadd(add2, 3);//¼ì²éµØÖ·ÊÇ·ñ·ûºÏ³¤¶È
 	if (tmp == 1)
 	{
-		printf("æ ¼å¼é”™è¯¯\a\n");
+		printf("¸ñÊ½´íÎó\a\n");
 		goto start2;
 	}
 start3:
-	printf("è¯·è¾“å…¥ç”¨æˆ·æˆ·å·ï¼ˆå¦‚â€œ123â€ï¼Œ1-999å†…ï¼‰");
+	printf("ÇëÊäÈëÓÃ»§»§ºÅ£¨Èç¡°123¡±£¬1-999ÄÚ£©");
 	scanf("%10s", add3);
-	tmp = checkadd(add3, 4);
+	tmp = checkadd(add3, 4);//¼ì²éµØÖ·ÊÇ·ñ·ûºÏ³¤¶È
 	if (tmp == 1)
 	{
-		printf("æ ¼å¼é”™è¯¯\a\n");
+		printf("¸ñÊ½´íÎó\a\n");
 		goto start3;
 	}
-	tmp = checkadd2(add1, add2, add3,NULL);
+	tmp = checkadd2(add1, add2, add3, NULL);//¼ì²éµØÖ·ÖØÃû
 	if (tmp == 1)
 	{
 		return 1;
 	}
 start4:
-	printf("è¯·è¾“å…¥ç”¨æˆ·åï¼ˆ1-20å­—ï¼‰");
+	printf("ÇëÊäÈëÓÃ»§Ãû£¨1-20×Ö£©");
 	scanf("%30s", name);
-	tmp = checkname2(name);
+	tmp = checkname2(name);//¼ì²éÓÃ»§Ãû³¤¶È
 	if (tmp == 1)
 	{
 		goto start4;
 	}
-	tmp = checkname(name);
+	tmp = checkname(name);//¼ì²éÓÃ»§ÃûÖØÃû
 	if (tmp == 1)
 	{
-		goto start4;
+		return 1;
 	}
 start5:
-	printf("è¯·è¾“å…¥å¯†ç ï¼ˆ5-20å­—ï¼‰");
+	printf("ÇëÊäÈëÃÜÂë£¨5-20×Ö£©");
 	scanf("%30s", pwd);
-	tmp = checkpwd2(pwd);
+	tmp = checkpwd2(pwd);//¼ì²éÃÜÂë³¤¶È
 	if (tmp == 1)
 	{
 		goto start5;
 	}
 	yezhu* newnode = (yezhu*)malloc(sizeof(yezhu));
-	if (newnode == NULL)
+	printf("ÇëÊäÈëÁªÏµµç»°");
+	scanf("%20s", tel);
+	if (newnode == NULL)//´´½¨ĞÂ½Úµã
 	{
-		printf("å†…å­˜åˆ†é…å¤±è´¥ï¼\a\n");
+		printf("ÄÚ´æ·ÖÅäÊ§°Ü£¡\a\n");
 		return 1;
 	}
-	printf("è¯·è¾“å…¥è”ç³»ç”µè¯ç”µè¯");
-	scanf("%20s", tel);
 	strcpy(newnode->add1, add1);
 	strcpy(newnode->add2, add2);
 	strcpy(newnode->add3, add3);
@@ -220,48 +225,49 @@ start5:
 	strcpy(newnode->pwd, pwd);
 	strcpy(newnode->tel, tel);
 	newnode->next = NULL;
+	//Á¬½ÓĞÂ½Úµã
 	prear->next = newnode;
 	prear = newnode;
-	current = newnode;//åˆ‡æ¢å½“å‰ä¸šä¸»
-	save(prear);
-	printf("æ³¨å†ŒæˆåŠŸ\n");
+	current = newnode;//ÇĞ»»µ±Ç°ÒµÖ÷
+	save(prear);//±£´æÎ²½Úµã
+	printf("×¢²á³É¹¦\n");
 	return 0;
 }
-// æ¸…ç©ºæ®‹ç•™å­—ç¬¦
+// Çå¿Õ²ĞÁô×Ö·û
 void clean()
 {
 	int c;
-	while ((c = getchar()) != '\n' && c != EOF);
+	while ((c = getchar()) != '\n' && c != EOF);//µ±c²»ÊÇ\n»òEOFÊ±¾Í¼ÌĞøgetchar£¬Ã¿getcharÒ»¸ö¾ÍÉÙÒ»¸ö×Ö·û
 }
-int checkname(char* name)//æŸ¥é‡åï¼ˆç”¨æˆ·åï¼‰
+int checkname(char* name)//²éÖØÃû£¨ÓÃ»§Ãû£©
 {
 	yezhu* cur = head->next;
 	while (cur != NULL)
 	{
 		if (strcmp(cur->name, name) == 0)
 		{
-			printf("é”™è¯¯ï¼šè¯¥ç”¨æˆ·åå·²è¢«å ç”¨ï¼\n\a");
+			printf("´íÎó£º¸ÃÓÃ»§ÃûÒÑ±»Õ¼ÓÃ£¡\n\a");
 			return 1;
 		}
 		cur = cur->next;
 	}
-	return 0;//æ­£å¸¸è¿”å›0
+	return 0;//Õı³£·µ»Ø0
 }
-int checkname2(char* name) // æ£€æŸ¥ç”¨æˆ·åé•¿åº¦(1-20)
+int checkname2(char* name) // ¼ì²éÓÃ»§Ãû³¤¶È(1-20)
 {
 	int len = strlen(name);
 	if (len < 1 || len > 20)
 	{
-		printf("é”™è¯¯ï¼šç”¨æˆ·åé•¿åº¦å¿…é¡»åœ¨1-20ä¸ªå­—ç¬¦ä¹‹é—´ï¼\n\a");
+		printf("´íÎó£ºÓÃ»§Ãû³¤¶È±ØĞëÔÚ1-20¸ö×Ö·ûÖ®¼ä£¡\n\a");
 		clean();
 		return 1;
 	}
 	return 0;
 }
-yezhu* checkname3(char* name)//ç™»å½•åå­—
+yezhu* checkname3(char* name)//ÕÒµ½Ãû×Ö¶ÔÓ¦µÄÓÃ»§
 {
 	yezhu* cur = head->next;
-	while (cur != NULL)
+	while (cur != NULL)//±éÀú
 	{
 		if (strcmp(cur->name, name) == 0)
 		{
@@ -269,32 +275,32 @@ yezhu* checkname3(char* name)//ç™»å½•åå­—
 		}
 		cur = cur->next;
 	}
-	return NULL;//æ­£å¸¸è¿”å›0
+	return NULL;//Ã»ÕÒµ½
 }
-int checkadd2(char* add1, char* add2, char* add3, yezhu* current)//æŸ¥é‡åï¼ˆåœ°å€ï¼‰
+int checkadd2(char* add1, char* add2, char* add3, yezhu* current)//²éÖØÃû£¨µØÖ·£©×îºóÊäÈëµÄyezhuÖ¸ÕëÊÇÔÚ¸ÄµØÖ·Ê±±ÜÃâºÍ×Ô¼ºÔ­À´µÄµØÖ·ÖØ¸´¶ø±¨´í
 {
 	yezhu* cur = head->next;
 	while (cur != NULL)
 	{
 		if ((strcmp(cur->add1, add1) == 0) && (strcmp(cur->add2, add2) == 0) && (strcmp(cur->add3, add3) == 0))
 		{
-			if (current == NULL)
+			if (current == NULL)//×¢²áÊ±ÓÃµÄ
 			{
-				printf("é”™è¯¯ï¼šè¯¥åœ°å€å·²æ³¨å†Œï¼\n\a");
+				printf("´íÎó£º¸ÃµØÖ·ÒÑ×¢²á£¡\n\a");
 				return 1;
 			}
-			else if (current!=cur)
+			else if (current != cur)//¸ÄµØÖ·Ê±ÓÃµÄ  ºÍ²»ÊÇ×Ô¼ºÔ­À´µØÖ·µÄµØÖ·ÖØ¸´
 			{
-				printf("é”™è¯¯ï¼šè¯¥åœ°å€å·²æ³¨å†Œï¼\n\a");
+				printf("´íÎó£º¸ÃµØÖ·ÒÑ×¢²á£¡\n\a");
 				return 1;
 			}
 
 		}
 		cur = cur->next;
 	}
-	return 0;//æ­£å¸¸è¿”å›0
+	return 0;//Õı³£·µ»Ø0
 }
-int checkadd(char* add, int n)//æŸ¥åœ°å€æ ¼å¼
+int checkadd(char* add, int n)//²éµØÖ·¸ñÊ½£¨Ö»ÄÜÊÇÊı×Ö£¬ÇÒÓĞ³¤¶ÈÒªÇó£©
 {
 	int i = 0;
 	while (add[i] != '\0')
@@ -305,7 +311,7 @@ int checkadd(char* add, int n)//æŸ¥åœ°å€æ ¼å¼
 		}
 		i++;
 	}
-	if (i > (n - 1))
+	if (i > (n - 1))//³¤¶ÈÒªÇó
 	{
 		return 1;
 	}
@@ -314,18 +320,18 @@ int checkadd(char* add, int n)//æŸ¥åœ°å€æ ¼å¼
 		return 0;
 	}
 }
-//ä¿å­˜ä¸šä¸»
+//±£´æÒµÖ÷£¨µ¥¸ö½Úµã£©
 void save(yezhu* newnode)
 {
-	FILE* fp = fopen("user.txt", "a");
+	FILE* fp = fopen("user.txt", "a");//×·¼ÓÄ£Ê½
 	if (fp == NULL)
 	{
 		return;
 	}
-	fprintf(fp, "%s,%s,%s,%s,%s,%s\n", newnode->add1, newnode->add2, newnode->add3, newnode->name, newnode->pwd, newnode->tel);
+	fprintf(fp, "%s,%s,%s,%s,%s,%s\n", newnode->add1, newnode->add2, newnode->add3, newnode->name, newnode->pwd, newnode->tel);//°´ĞĞÊäÈë
 	fclose(fp);
 }
-//ç™»å½•
+//µÇÂ¼
 int signin()
 {
 	while (1)
@@ -334,27 +340,27 @@ int signin()
 		int tmp = 1;
 		char pwd[20];
 		char name[20];
-		printf("è¯·è¾“å…¥ç”¨æˆ·å\n");
+		printf("ÇëÊäÈëÓÃ»§Ãû\n");
 		scanf("%20s", name);
-		printf("è¯·è¾“å…¥å¯†ç \n");
+		printf("ÇëÊäÈëÃÜÂë\n");
 		scanf("%20s", pwd);
-		cur = checkname3(name);
-		tmp = checkpwd(pwd, cur);
+		cur = checkname3(name);//ÕÒµ½¶ÔÓ¦ÓÃ»§
+		tmp = checkpwd(pwd, cur);//¼ì²éÃÜÂëÊÇ·ñÒ»Ñù
 		if ((tmp == 0))
 		{
-			printf("ç™»å½•æˆåŠŸ\n");
-			current = cur;//åˆ‡æ¢å½“å‰ä¸šä¸»
+			printf("µÇÂ¼³É¹¦\n");
+			current = cur;//ÇĞ»»µ±Ç°ÒµÖ÷
 			return 0;
 		}
 		else
 		{
-			printf("ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯\a\n");
+			printf("ÓÃ»§Ãû»òÃÜÂë´íÎó\a\n");
 			return 1;
 		}
 	}
-	
+
 }
-int checkpwd(char* pwd, yezhu* cur)//æ ¸å¯¹å¯†ç 
+int checkpwd(char* pwd, yezhu* cur)//±È½ÏÃÜÂëÊÇ·ñÒ»Ñù
 {
 	if (cur == NULL)
 	{
@@ -369,36 +375,36 @@ int checkpwd(char* pwd, yezhu* cur)//æ ¸å¯¹å¯†ç 
 		return 1;
 	}
 }
-int checkpwd2(char* pwd)
+int checkpwd2(char* pwd)//¼ì²éÃÜÂë³¤¶ÈÊÇ·ñÕıÈ·
 {
 	int len = strlen(pwd);
 	if (len < 5 || len > 20)
 	{
-		printf("é”™è¯¯ï¼šå¯†ç é•¿åº¦å¿…é¡»åœ¨5-20ä¸ªå­—ç¬¦ä¹‹é—´ï¼\n\a");
+		printf("´íÎó£ºÃÜÂë³¤¶È±ØĞëÔÚ5-20¸ö×Ö·ûÖ®¼ä£¡\n\a");
 		clean();
-		return 1; // é•¿åº¦ä¸åˆæ³•è¿”å›1
+		return 1; // ³¤¶È²»ºÏ·¨·µ»Ø1
 	}
-	return 0; // åˆæ³•è¿”å›0
+	return 0; // ºÏ·¨·µ»Ø0
 }
-void zhaohui()//å¯†ç æ‰¾å›
+void zhaohui()//ÃÜÂëÕÒ»Ø
 {
-	char add1[20];//æ¥¼å·
-	char add2[20];//æ¥¼å±‚
-	char add3[20];//æˆ·å·
-	char tel[30];//ç”µè¯
-	printf("è¯·è¾“å…¥ç”¨æˆ·æ¥¼å·");
+	char add1[20];//Â¥ºÅ
+	char add2[20];//Â¥²ã
+	char add3[20];//»§ºÅ
+	char tel[30];//µç»°
+	printf("ÇëÊäÈëÓÃ»§Â¥ºÅ");
 	scanf("%10s", add1);
-	printf("è¯·è¾“å…¥ç”¨æˆ·æ¥¼å±‚");
+	printf("ÇëÊäÈëÓÃ»§Â¥²ã");
 	scanf("%10s", add2);
-	printf("è¯·è¾“å…¥ç”¨æˆ·æˆ·å·");
+	printf("ÇëÊäÈëÓÃ»§»§ºÅ");
 	scanf("%10s", add3);
 	int temp = 1;
 	yezhu* cur = head->next;
 	while (cur != NULL)
 	{
-		if ((strcmp(cur->add1, add1) == 0) && (strcmp(cur->add2, add2) == 0) && (strcmp(cur->add3, add3) == 0))
+		if ((strcmp(cur->add1, add1) == 0) && (strcmp(cur->add2, add2) == 0) && (strcmp(cur->add3, add3) == 0))//Æ¥ÅäµØÖ·
 		{
-			printf("å·²æ‰¾åˆ°è¯¥åœ°å€\n");
+			printf("ÒÑÕÒµ½¸ÃµØÖ·\n");
 			temp = 0;
 			break;
 		}
@@ -406,19 +412,19 @@ void zhaohui()//å¯†ç æ‰¾å›
 	}
 	if (temp == 1)
 	{
-		printf("æœªæ‰¾åˆ°è¯¥åœ°å€\a\n");
+		printf("Î´ÕÒµ½¸ÃµØÖ·\a\n");
 		return;
 	}
-	printf("è¯·è¾“å…¥ç”µè¯\n");
+	printf("ÇëÊäÈëµç»°\n");
 	scanf("%20s", tel);
 	if (strcmp(tel, cur->tel) == 0)
 	{
-		printf("æˆåŠŸ\n");
-		printf("ç”¨æˆ·åï¼š%s\nå¯†ç ï¼š%s\n", cur->name, cur->pwd);
+		printf("³É¹¦\n");
+		printf("ÓÃ»§Ãû£º%s\nÃÜÂë£º%s\n", cur->name, cur->pwd);
 	}
 	else
 	{
-		printf("ç”µè¯é”™è¯¯\a\n");
+		printf("µç»°´íÎó\a\n");
 	}
 }
 
