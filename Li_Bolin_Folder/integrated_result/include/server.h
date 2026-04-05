@@ -12,6 +12,11 @@ void statistics_year_condition(int index);
 void query_all_payment(int owner_id);
 void query_payment_by_year(int owner_id, int year);
 void query_unpaid_by_year(int year, int index);
+void check_birthday_and_care();
+void edit_owner_profile(int index);
+void query_owner_by_tag();
+void query_birthday_this_month();
+void statistics_by_tags();
 
 //物业服务人员系统
 void server_system();

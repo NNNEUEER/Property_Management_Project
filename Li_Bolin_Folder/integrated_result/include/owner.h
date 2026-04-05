@@ -113,5 +113,11 @@ int compareFeeDateAsc(const void* a, const void* b);
 int compareFeeDateDesc(const void* a, const void* b);
 int compareFeeAmountAsc(const void* a, const void* b);
 int compareFeeAmountDesc(const void* a, const void* b);
+//额外功能
+void e_system();//停车系统
+void open(char line[],char* name[]);//停车
+void off(char line[],char* name[]);//取消停车
+void suggestions();//给出建议
+void submit();
 
 #endif // OWNER_H
